@@ -7,7 +7,8 @@
     <title>QR_CAM</title>
     <link rel="stylesheet" type="text/css" href="./bootstrap.css">
     <script "type=text/javascript" src ="./html5-qrcode.min.js"></script>
-    <script "type=text/javascript" src ="./SQLinsert.js"></script>
+    <script src="jquery-3.6.0.min.js"></script> </script>
+    <!-- <script "type=text/javascript" src ="./SQLinsert.js"></script> -->
 <style>
     main{
         display: flex;
@@ -50,10 +51,10 @@
                 <legend>Quantity</legend>
                 <input type="number" class="form-control" name="" id="Quantity">
             <br></br>
-            <button type="button" id="insert" class="btn btn-sucess">Insert</button>
-            <button type="button" id="create" class="btn btn-sucess">Create Table</button>
+            <button type="button" id="insert" class="btn btn-success">Insert</button>
+            <button type="button" id="create" class="btn btn-success">Create Table</button>
             <button type="button" id="remove" class="btn btn-danger">Delete Table</button>
-            <button type="button" id="fetch" class="btn btn-sucess">Record</button>
+            <button type="button" id="fetch" class="btn btn-success">Record</button>
         </fieldset>
         <br>
         <h4>Report</h4>
@@ -65,12 +66,37 @@
 
     </table>
     <script>
-        var db = openDatabase("itemDB","1.0","itemDB",65535);
+        var db = window.openDatabase("itemDB","1.0","itemDB",65535);
         $(function(){
-    
-
-
             
+            //creating a db
+            $("#create").click(function(){
+            db.transaction(function(transaction){
+            var sql = "CREATE TABLE items"+
+                    "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
+                    "item VARCHAR(100) NOT NULL,"+
+                    "quantity INTEGER(5) NOT NULL)";
+                transaction.executeSql(sql,undefined,
+                    function(){alert("Database created!");},
+                    function(){alert("DB already created");})
+                });
+            });
+            //removing a db
+            $("#remove").click(function(){
+                if(!confirm("You Sure modasucka? delete table?",""))return;;
+                db.transaction(function(transaction){
+                    var sql = "DROP TABLE items";
+                    transaction.executeSql(sql,undefined,function(){alert("table deleted")},function(){alert("error occured")});
+                });
+            });
+
+            //inserting an element...the most important one
+            $("#insert").click(function(){
+                
+            });
+
+
+
         })
 
         
