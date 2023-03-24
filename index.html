@@ -74,11 +74,11 @@
             db.transaction(function(transaction){
             var sql = "CREATE TABLE items"+
                     "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
-                    "item VARCHAR(100) NOT NULL,"+
-                    "quantity INTEGER(5) NOT NULL)";
-                transaction.executeSql(sql,undefined,
+                    "item VARCHAR(100) NOT NULL,"+ //will use this "item" as a key(as #item) in insert function
+                    "quantity INTEGER(5) NOT NULL)"; //will use this "quantity" as another key(as #quantity) in insert function
+                    transaction.executeSql(sql,undefined,
                     function(){alert("Database created!");},
-                    function(){alert("DB already created");})
+                    function(){alert("Database already exists");})
                 });
             });
             //removing a db
@@ -86,13 +86,26 @@
                 if(!confirm("You Sure modasucka? delete table?",""))return;;
                 db.transaction(function(transaction){
                     var sql = "DROP TABLE items";
-                    transaction.executeSql(sql,undefined,function(){alert("table deleted")},function(){alert("error occured")});
+                    transaction.executeSql(sql,undefined,
+                    function(){alert("table deleted")},
+                    function(){alert("No tables found to delete");});
                 });
             });
 
             //inserting an element...the most important one
             $("#insert").click(function(){
-                
+            var item = $("#item").val();
+            var qty = $("#quantity").val();
+            db.transaction(function(transaction){
+                // alert("item added successfully");
+                var sql = "INSERT INTO items(item,quantity) VALUES(?,?)";
+                transaction.executeSql(sql,[item,qty],
+                function(){alert("item added successfully")},
+                function(transaction,err){alert(err.message)});
+            });
+
+
+
             });
 
 
