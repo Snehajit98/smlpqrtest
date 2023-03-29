@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="#">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable = no,initial-scale=1.0">
     <title>QR_CAM</title>
     <link rel="stylesheet" type="text/css" href="./bootstrap.css">
     <script "type=text/javascript" src ="./html5-qrcode.min.js"></script>
     <script src="jquery-3.6.0.min.js"></script> </script>
-    <!-- <script "type=text/javascript" src ="./SQLinsert.js"></script> -->
+    <script "type=text/javascript" src ="./SQLinsert.js"></script>
 <style>
     main{
         display: flex;
@@ -17,7 +16,7 @@
         align-items: center;
     }
     #reader{
-        width: "600px";
+        width: "device-width";
         text-align: center;
     }
     #result{
@@ -35,7 +34,8 @@
         scanner.render(sucess);
         function sucess(result){
             console.log(result);
-            document.getElementById("result").innerHTML=`<h2>yeaaaaaahhh boiiii</h2><p><a href = ></a>"${result}"</p>`;
+            document.getElementById("result").innerHTML=`<h3>SUCCESS!</h3><p><a href = ></a>"${result}"</p>`;
+            document.getElementById("instrument").value = result;
             // this `` operator is hell lotg important 
             scanner.clear();
             document.getElementById('reader').remove();
@@ -48,73 +48,31 @@
         <form>
             <fieldset>
                 <legend>Instrument</legend>
-                <input type="text" class="form-control" name="" id="Instrument">
+                <input  type="text" class="form-control" name="" id="instrument" placeholder="Enter UMC No. here" value="">
+                <!-- <script>
+                    if (document.getElementById("result").value != null){
+                        document.getElementById("instrument").value=document.getElementById("result").value;
+                    }
+                </script> -->
                 <legend>Quantity</legend>
-                <input type="number" class="form-control" name="" id="Quantity">
+                <input type="number" class="form-control" name="" id="quantity" placeholder="Enter Quantity">
             <br></br>
             <button type="button" id="insert" class="btn btn-success">Insert</button>
             <button type="button" id="create" class="btn btn-success">Create Table</button>
             <button type="button" id="remove" class="btn btn-danger">Delete Table</button>
             <button type="button" id="fetch" class="btn btn-success">Record</button>
         </fieldset>
+
         <br>
-        <h4>Report</h4>
+        <table class="table table-bordered table-hover" id ="itemlist"><h3> RECORD </h3> </table>
+        <!-- <button type="button" class="btn-danger" id="delete">DELETE</button>
+        <button  type="button" class="btn-primary" id="find">FIND</button> -->
         </form>
     
     
         
-    <table class="table table-bordered table-hover">
-
-    </table>
-    <script>
-        var db = window.openDatabase("itemDB","1.0","itemDB",65535);
-        $(function(){
-            
-            //creating a db
-            $("#create").click(function(){
-            db.transaction(function(transaction){
-            var sql = "CREATE TABLE items"+
-                    "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
-                    "item VARCHAR(100) NOT NULL,"+ //will use this "item" as a key(as #item) in insert function
-                    "quantity INTEGER(5) NOT NULL)"; //will use this "quantity" as another key(as #quantity) in insert function
-                    transaction.executeSql(sql,undefined,
-                    function(){alert("Database created!");},
-                    function(){alert("Database already exists");})
-                });
-            });
-            //removing a db
-            $("#remove").click(function(){
-                if(!confirm("You Sure modasucka? delete table?",""))return;;
-                db.transaction(function(transaction){
-                    var sql = "DROP TABLE items";
-                    transaction.executeSql(sql,undefined,
-                    function(){alert("table deleted")},
-                    function(){alert("No tables found to delete");});
-                });
-            });
-
-            //inserting an element...the most important one
-            $("#insert").click(function(){
-            var item = $("#item").val();
-            var qty = $("#quantity").val();
-            db.transaction(function(transaction){
-                // alert("item added successfully");
-                var sql = "INSERT INTO items(item,quantity) VALUES(?,?)";
-                transaction.executeSql(sql,[item,qty],
-                function(){alert("item added successfully")},
-                function(transaction,err){alert(err.message)});
-            });
-
-
-
-            });
-
-
-
-        })
-
-        
-    </script>
+    <!-- <table class="table table-bordered table-hover" id ="itemlist"> fuck </table> -->
+    
     </div>
     </div>
     <!-- <h3>${result}</h3> -->
