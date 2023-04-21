@@ -1,0 +1,16 @@
+
+//   for(var i=1;i<result.rows.length;i++){
+//     var button_id = "delete"+i;
+//     alert(button_id);
+   //  $("#delete1").click(function(){alert('hi');});
+
+//         //document.getElementById(button_id).onclick = function() {alert("button was clicked");}
+//  }
+
+            //  document.getElementById('delete1').onclick = function() {alert("button was clicked");}
+            //         $("#delete1").click(function(){
+            //             alert('hi');
+            //      });
+            //      $("#delete2").click(function(){
+            //         alert('hi2');
+            //  });
