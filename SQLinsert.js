@@ -42,6 +42,7 @@ $(function(){
         function(){alert("item added successfully")},
         function(transaction,err){alert(//err.message//
         "No Database Found. Create a database first")});
+        location.reload(true);
     });
     });
 
