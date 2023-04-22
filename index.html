@@ -19,10 +19,17 @@
     #reader{
         width: "device-width";
         text-align: center;
+        position: fixed;
+        top : 0rem;
+        right : 20rem;
+        left: 0rem;
     }
     #result{
         text-align: center;
         font-size: 1.5rem;
+        position: fixed;
+        top : 4rem;
+        right : 4rem;
     }
     </style>
 
@@ -50,16 +57,17 @@
 
     <div class="container" >
     <div class ="row">
+        
         <form>
             <fieldset>
-                <legend>Instrument</legend>
+                <legend><h3>Instrument</h3></legend>
                 <input  type="text" class="form-control" name="" id="instrument" placeholder="Enter UMC No. here" value="">
                 <!-- <script>
                     if (document.getElementById("result").value != null){
                         document.getElementById("instrument").value=document.getElementById("result").value;
                     }
                 </script> -->
-                <legend>Quantity</legend>
+                <legend><h3>Quantity</h3></legend>
                 <input type="number" class="form-control" name="" id="quantity" placeholder="Enter Quantity">
 
                 
@@ -71,28 +79,61 @@
         </fieldset>
         <br>
         <table class="table table-bordered table-hover" id ="itemlist"><h3> RECORD </h3></table>
+        
         </form>
+
+
+       
+        <div class ="search">
+            <form>
+                <fieldset>
+                    <legend><h3>Search Instrument</h3></legend>
+                    <button type="button"  id="search_btn" class="btn btn-success"  style="float: right"><span  class= "bi bi-search"></span> Find</button>
+                    <div style="overflow: hidden; padding-right: .5em;">
+                        <input type="text" class="form-control" style="width: 100%;" id="search_text" placeholder="Search UMC No. , Instrument , location" required><span id="name-msg"></span>
+                    </div>
+                    <table class="table table-bordered table-hover" id ="search_item"></table>
+        
+                </fieldset>
+                   
+            </form>
+        </div>
+
+
     </div>
 
 
-    <div class ="search">
-        <h1>hi</h1>
-    </div>
+
 
 
     </div>
     <style>
         .row{
-        border: 1px solid black;
-        margin: 1rem;
+        /* border: 1px solid black; */
+        /* margin: 1rem; */
         padding: 2rem 2rem;
         text-align: center;
+        position: fixed;
+        top : 15rem;
+        /* border: 1px solid red; */
+   
         }
         .search {
-        display: inline-block;
-        border: 1px solid red;
-        padding: 1rem 1rem;
+        display: inline-flexbox;
+        text-align: center;
+        /* border: 1px solid red; */
+        /* padding: 2rem 8rem; */
         vertical-align: top;
+         margin-left: 10rem; 
+        margin-right: 3rem;
+        position: relative;
+        top : 0rem;
+        left: 3rem;
+        right : 0rem;
+        /* border: 1px solid red; */
+        height: auto;
+        width: 25rem;
+
         }
     </style>
 
