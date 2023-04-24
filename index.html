@@ -15,6 +15,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position : fixed;
     }
     #reader{
         width: "device-width";
@@ -56,6 +57,21 @@
 
 
     <div class="container" >
+
+        <div class ="search">
+            <form>
+                <fieldset>
+                    <legend><h3>Search Instrument</h3></legend>
+                    <button type="button"  id="search_btn" class="btn btn-success"  style="float: right"><span  class= "bi bi-search"></span> Search </button>
+                    <div style="overflow: hidden; padding-right: .5em;">
+                        <input type="text" class="form-control" style="width: 100%;" id="search_text" placeholder="Search UMC No. , Instrument , location" required><span id="name-msg"></span>
+                    </div>
+                    <table class="table table-bordered table-hover" id ="search_item"></table>
+        
+                </fieldset>
+                   
+            </form>
+        </div>
     <div class ="row">
         
         <form>
@@ -84,20 +100,7 @@
 
 
        
-        <div class ="search">
-            <form>
-                <fieldset>
-                    <legend><h3>Search Instrument</h3></legend>
-                    <button type="button"  id="search_btn" class="btn btn-success"  style="float: right"><span  class= "bi bi-search"></span> Find</button>
-                    <div style="overflow: hidden; padding-right: .5em;">
-                        <input type="text" class="form-control" style="width: 100%;" id="search_text" placeholder="Search UMC No. , Instrument , location" required><span id="name-msg"></span>
-                    </div>
-                    <table class="table table-bordered table-hover" id ="search_item"></table>
-        
-                </fieldset>
-                   
-            </form>
-        </div>
+
 
 
     </div>
@@ -113,8 +116,9 @@
         /* margin: 1rem; */
         padding: 2rem 2rem;
         text-align: center;
-        position: fixed;
-        top : 15rem;
+        position: relative;
+       
+        
         /* border: 1px solid red; */
    
         }
@@ -124,11 +128,11 @@
         /* border: 1px solid red; */
         /* padding: 2rem 8rem; */
         vertical-align: top;
-         margin-left: 10rem; 
+         margin-left: 20rem; 
         margin-right: 3rem;
         position: relative;
-        top : 0rem;
-        left: 3rem;
+        top : 2rem;
+        left: 6rem;
         right : 0rem;
         /* border: 1px solid red; */
         height: auto;
