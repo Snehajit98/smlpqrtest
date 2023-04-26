@@ -55,28 +55,42 @@ $(function(){
     $("#fetch").click(function(){
        loadData();
     });
+
 function loadData(){
     $("#itemlist").children().remove();
     db.transaction(function(transaction){
+        var table = document.getElementById("itemlist");
+        var htmlData = "";
+        htmlData+=("<tr><th>Instr. ID</th><th>UMC No.</th><th>Quantity</th><th>Remove Item</th><th>Edit Quantity</th></tr>");
+       
         sql = "SELECT * FROM items ORDER BY id ASC";
         transaction.executeSql(sql, undefined,function(transaction,result){
             if(result.rows.length){
+               
                 for(var i=0;i<result.rows.length;i++){
                     var row = result.rows.item(i);
                     var id = row.id;
                     var item = row.item;
                     var quantity = row.quantity;
                     var button_id = "delete"+id;
+                   
+                   
                    // $("#itemlist").append('<tr><td>'+id+'</td><td>'+item+'</td><td>'+quantity+'</td><td><button href ="#" button type="button" class="btn-danger" deleteitem data-id="'+id+
                    // '">DELETE</button> <button href="#" type="button" class="btn-primary" id="find">FIND</button></td></tr>');
-                   $("#itemlist").append(`<tr><td>`+id+`</td><td>`+item+`</td><td>`+quantity+`</td>
-                   <td><button type="button" id=`+button_id+` class="btn btn-danger"><span class="bi bi-trash-fill" style="font-size:1rem"></span> Delete</button></td>
-                   <td><button type="button" id=`+button_id+` class="btn btn-primary"><span class="bi bi-pencil-square" style="font-size:1rem"></span> Edit</button></td>
-                   </tr>`);
+                //    $("#itemlist").append(`<tr><td>`+id+`</td><td>`+item+`</td><td>`+quantity+`</td>
+                //    <td><button type="button" id=`+button_id+` class="btn btn-danger"><span class="bi bi-trash-fill" style="font-size:1rem"></span> Delete</button></td>
+                //    <td><button type="button" id=`+button_id+` class="btn btn-primary"><span class="bi bi-pencil-square" style="font-size:1rem"></span> Edit</button></td>
+                //    </tr>`);
+                    htmlData += `<tr><td>`+id+`</td><td>`+item+`</td><td>`+quantity+`</td>
+                        <td><button type="button" id=`+button_id+` class="btn btn-danger"><span class="bi bi-trash-fill" style="font-size:1rem"></span> Delete</button></td>
+                       <td><button type="button" id=`+button_id+` class="btn btn-primary"><span class="bi bi-pencil-square" style="font-size:1rem"></span> Edit</button></td>
+                        </tr>`;
+
                 }
+                table.innerHTML=htmlData;
 
 
-
+                // delete or exert button of table
                 for ( var i = 0; i <=result.rows.length; i++ ) (function(i){ 
                      
                         $("#delete"+i).click(function(){
