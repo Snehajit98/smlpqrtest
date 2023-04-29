@@ -34,21 +34,51 @@ $(function(){
 
     //inserting an element...the most important one
     $("#insert").click(function(){
-    var item = $("#instrument").val()
-    //var item = $("#result").val()
-    //console.log($("#result").val())
-    var qty = $("#quantity").val();
+    var item_input = $("#instrument").val()
+    var qty_input = $("#quantity").val();
+
+
     db.transaction(function(transaction){
-        // alert("item added successfully");
-        sql = "INSERT INTO items(item,quantity) VALUES(?,?)";
-        transaction.executeSql(sql,[item,qty],
-        function(){alert("item added successfully")},
-        function(transaction,err){alert(//err.message//
-        "No Database Found. Create a database first")});
-        loadData();
-        
-    });
-    // location.reload(true);
+       // sql = "SELECT * FROM items WHERE item="+item_input+" ORDER BY id ASC"; //THIS IS PERFECT. BUT LETS TRY SOMETHING ELSE.
+       sql = "SELECT * FROM items WHERE item LIKE '%"+item_input+"%' ORDER BY id ASC";
+        transaction.executeSql(sql, undefined,function(transaction,result){
+            if(result.rows.length){
+                for(var i=0;i<result.rows.length;i++){
+                    var row = result.rows.item(i);
+                    var id = row.id;
+                    var quantity = Number(row.quantity)+Number(qty_input);
+
+                    db.transaction(function(transaction){
+                        sql = "UPDATE items SET quantity = "+quantity+" WHERE id ="+id+""
+                        transaction.executeSql(sql,[])
+                        });
+                    
+                    loadData();
+
+                }}
+                else{
+
+
+                    db.transaction(function(transaction){
+
+                        sql = "INSERT INTO items(item,quantity) VALUES(?,?)";
+                        transaction.executeSql(sql,[item_input,qty_input],
+                        function(){alert("item added successfully")},
+                        function(transaction,err){alert(//err.message//
+                        "No Database Found. Create a database first")});
+                        loadData();
+                        
+                    });
+
+
+                }
+            },function(transaction,err){
+                    alert(err.message);
+                });
+
+        });
+
+
     });
 
     //fetching records of available material
@@ -57,7 +87,7 @@ $(function(){
     });
 
 function loadData(){
-    $("#itemlist").children().remove();
+   // $("#itemlist").children().remove();
     db.transaction(function(transaction){
         var table = document.getElementById("itemlist");
         var htmlData = "";
@@ -71,16 +101,9 @@ function loadData(){
                     var row = result.rows.item(i);
                     var id = row.id;
                     var item = row.item;
-                    var quantity = row.quantity;
+                    var quantity = Number(row.quantity);
                     var button_id = "delete"+id;
-                   
-                   
-                   // $("#itemlist").append('<tr><td>'+id+'</td><td>'+item+'</td><td>'+quantity+'</td><td><button href ="#" button type="button" class="btn-danger" deleteitem data-id="'+id+
-                   // '">DELETE</button> <button href="#" type="button" class="btn-primary" id="find">FIND</button></td></tr>');
-                //    $("#itemlist").append(`<tr><td>`+id+`</td><td>`+item+`</td><td>`+quantity+`</td>
-                //    <td><button type="button" id=`+button_id+` class="btn btn-danger"><span class="bi bi-trash-fill" style="font-size:1rem"></span> Delete</button></td>
-                //    <td><button type="button" id=`+button_id+` class="btn btn-primary"><span class="bi bi-pencil-square" style="font-size:1rem"></span> Edit</button></td>
-                //    </tr>`);
+   
                     htmlData += `<tr><td>`+id+`</td><td>`+item+`</td><td>`+quantity+`</td>
                         <td><button type="button" id=`+button_id+` class="btn btn-danger"><span class="bi bi-trash-fill" style="font-size:1rem"></span> Delete</button></td>
                        <td><button type="button" id=`+button_id+` class="btn btn-primary"><span class="bi bi-pencil-square" style="font-size:1rem"></span> Edit</button></td>
@@ -89,33 +112,32 @@ function loadData(){
                 }
                 table.innerHTML=htmlData;
 
-
-                // delete or exert button of table
+            // delete or exert button of table
                 for ( var i = 0; i <=result.rows.length; i++ ) (function(i){ 
-                     
-                        $("#delete"+i).click(function(){
-                            alert('hiu'+i);
 
-                           
-                            // var item = $("#instrument").val()
-                            // //var item = $("#result").val()
-                            // console.log($("#result").val())
-                            // var qty = $("#quantity").val();
-                            db.transaction(function(transaction){
-                                    //sql = "INSERT INTO items(item,quantity) VALUES(?,?)";
-                                    sql = "UPDATE items SET quantity = '6' WHERE id ="+i
-                                    transaction.executeSql(sql,[])
-                                    });
-
-                                    location.reload(true);
-                        });  
-                  })(i);
-
-
-
-                  
+                    $("#delete"+i).click(function(){
                 
-
+                        db.transaction(function(transaction){
+                           
+                            sql="SELECT quantity FROM items WHERE id="+i+""
+                            transaction.executeSql(sql,undefined,function(transaction,result){
+                               //alert(result.rows.item(0).quantity)
+                               qty_del = Number(result.rows.item(0).quantity)
+                                var qty_del_update = qty_del-1
+                               if(qty_del>0){
+                            //   alert(qty_del_update)
+                            sql = "UPDATE items SET quantity = "+ qty_del_update+" WHERE id ="+i
+                            transaction.executeSql(sql,[])
+                            location.reload();}
+                            else{
+                                alert("This item is already 0")
+                            }
+                            })
+                            
+                    })})
+                    
+              })(i);
+            
 
             }
             else{
@@ -131,6 +153,11 @@ function loadData(){
     $("#search_btn").click(function(){
         load_search();
     });
+
+
+  
+
+
 
 
     function load_search(){
