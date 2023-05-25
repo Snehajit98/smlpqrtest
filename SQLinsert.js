@@ -1,4 +1,3 @@
-
 var db = window.openDatabase("itemDB","1.0","itemDB",65535);
 var sql =""
 
@@ -11,7 +10,6 @@ $(function(){
     sql = "CREATE TABLE items"+
             "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
             "item VARCHAR(100) NOT NULL,"+ //will use this "item" as a key(as #item) in insert function
-            "desc VARCHAR(100) NOT NULL,"+
             "quantity INTEGER(5) NOT NULL)"; //will use this "quantity" as another key(as #quantity) in insert function
             transaction.executeSql(sql,undefined,
             function(){alert("Database created!");},
@@ -35,13 +33,16 @@ $(function(){
 
     //inserting an element...the most important one
     $("#insert").click(function(){
+
+
     var item_input = $("#instrument").val()
     var qty_input = $("#quantity").val();
-
+    if ((item_input.indexOf('')>=0)&&(qty_input > 0)&&(item_input!=null)&&(item_input!="")){
     //insert_function(item_input,qty_input);
     db.transaction(function(transaction){
         // sql = "SELECT * FROM items WHERE item="+item_input+" ORDER BY id ASC"; //THIS IS PERFECT. BUT LETS TRY SOMETHING ELSE.
-        sql = "SELECT * FROM items WHERE item LIKE '%"+item_input+"%' OR desc LIKE '%"+item_input+"%' ORDER BY id ASC";
+        alert(item_input)
+        sql = "SELECT * FROM items WHERE item LIKE '%" +item_input+ "%' ORDER BY id ASC";
          transaction.executeSql(sql, undefined,function(transaction,result){
              if(result.rows.length){
                  for(var i=0;i<result.rows.length;i++){
@@ -65,8 +66,9 @@ $(function(){
                          sql = "INSERT INTO items(item,quantity) VALUES(?,?)";
                          transaction.executeSql(sql,[item_input,qty_input],
                          function(){alert("item added successfully")},
-                         function(transaction,err){alert(//err.message//
-                         "No Database Found. Create a database first")});
+                         function(transaction,err){alert(//err.message
+                        "Create Database First" 
+                        )});
                          loadData();
                          
                      });
@@ -78,8 +80,11 @@ $(function(){
                  });
     
          });
-
-
+        }
+         else{
+            alert("Please Insert Valid Input")
+         }
+         
 
     });
 
@@ -89,7 +94,8 @@ $(function(){
     });
 
 function loadData(){
-   // $("#itemlist").children().remove();
+ //  $("#itemlist").children().remove();
+
     db.transaction(function(transaction){
         var table = document.getElementById("itemlist");
         var htmlData = "";
@@ -111,8 +117,13 @@ function loadData(){
                      <td><button type="button" id=`+button_id+` class="btn btn-primary"><span class="bi bi-pencil-square" style="font-size:1rem"></span> Edit</button></td>
                         </tr>`;
 
+
+
                 }
                 table.innerHTML=htmlData;
+
+                $("#instrument").children().remove()
+                $("#quantity").val() = 0
 
             // delete or exert button of table
                 for ( var i = 0; i <=result.rows.length; i++ ) (function(i){ 
@@ -131,7 +142,6 @@ function loadData(){
                             sql = "UPDATE items SET quantity = "+ qty_del_update+" WHERE id ="+i
                             transaction.executeSql(sql,[])
                             $("#fetch").click()
-                            
                         }
                             else{
                                 alert("This item is already 0")
@@ -145,7 +155,6 @@ function loadData(){
             }
             else{
                 $("#itemlist").empty()
-                
                 $("#itemlist").append("<tr><td colspan='3' align ='center'> No Items Found</td><tr>");
             }
         },function(transaction,err){
@@ -169,7 +178,7 @@ function loadData(){
         if(search_word){
             db.transaction(function(transaction){
             // sql = "SELECT * FROM items WHERE item='2053A3058' ORDER BY id ASC"; //THIS IS PERFECT. BUT LETS TRY SOMETHING ELSE.
-            sql = "SELECT * FROM items WHERE item LIKE '%"+search_word+"%' OR desc ORDER BY id ASC";
+            sql = "SELECT * FROM items WHERE item LIKE '%"+search_word+"%' ORDER BY id ASC";
             transaction.executeSql(sql, undefined,function(transaction,result){
                 if(result.rows.length){
                     for(var i=0;i<result.rows.length;i++){

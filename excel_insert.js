@@ -58,7 +58,7 @@ if (extension == '.XLS' || extension == '.XLSX') {
                   
                 if(result.rows.length){
                     //alert(result.rows.item(0).id) 
-                    alert("hi "+row_xl["Quantity"] +" "+ result.rows.length + " " )
+                    //alert("hi "+row_xl["Quantity"] +" "+ result.rows.length + " " )
 
                     var row = result.rows.item(0); //as there is only single row iterareted by predecessor for() loop, rows.item(i) doesn't work. only rows,item(0) works 
                     var id = row.id;
@@ -72,7 +72,7 @@ if (extension == '.XLS' || extension == '.XLSX') {
 
                 }
                 else{ 
-                    alert(row_xl["Quantity"])
+                   // alert(row_xl["Quantity"])
                     
                         
                     db.transaction(function(transaction){
