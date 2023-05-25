@@ -19,12 +19,21 @@
         align-items: center;
         position : fixed;
     }
+    #scan_img{
+        text-align: center;
+        font-size: 20 rem;
+        position: relative;
+        top : 4rem;
+        left : 40%
+        
+        
+    }
     #reader{
         width: "device-width";
         text-align: center;
         position: fixed;
         top : 0rem;
-        right : 20rem;
+        right : 4rem;
         left: 0rem;
     }
     #result{
@@ -34,32 +43,38 @@
         top : 4rem;
         right : 4rem;
     }
+
     </style>
 
 </head>
 <body>
 
 
-    
+    <div class="scan_container">
+    <button type="button" id="scan_img" class="btn btn-success"><h2><i class="bi bi-qr-code"></i> SCAN CODE </h2></button>
     <div id = "reader"></div>
     <div id = "result"></div>
     <script>
+         $("#scan_img").click(function(){
+            $("#scan_img").hide()
         var result;
         const scanner =new Html5QrcodeScanner("reader",{qrbox:{width:250, height:250},fps: 20});
         scanner.render(sucess);
         function sucess(result){
             console.log(result);
-            document.getElementById("result").innerHTML=`<h3>SUCCESS!</h3><p><a href = ></a>"${result}"</p>`;
+           // document.getElementById("result").innerHTML=`<h3>SUCCESS!</h3><p><a href = ></a>"${result}"</p>`;
+           document.getElementById("result").innerHTML = `<p><a href = ></a>"${result}"</p>`
             document.getElementById("instrument").value = result;
-            // this `` operator is hell lotg important 
+            // this `` multiline comment operator is hell lot important 
             scanner.clear();
             document.getElementById('reader').remove();
-        }
+        }})
     </script>
+    </div>
 
-
+ 
     <div class="container" >
-
+        
         <div class ="search">
             <form>
                 <fieldset>
@@ -108,11 +123,10 @@
     <div class="excel">
     
     <input type="file" id="file_upload" />
-    <button type="button"  id="excel" class="btn btn-success"  style="margin-left: 50%;"><span  class= ""> Insert Excel</span></button>
+    <button type="button"  id="excel" class="btn btn-success"  style="margin-left: 30%;"><span  class= ""> Insert Excel</span></button>
+    <!-- <br>
     <br>
-    <br>
-    <table class="table table-bordered table-hover" id="display_excel_data" border="1"></table>
-
+    <table class="table table-bordered table-hover" id="display_excel_data" border="1"></table> -->
     </div>
 
 
