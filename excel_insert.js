@@ -79,7 +79,9 @@ if (extension == '.XLS' || extension == '.XLSX') {
     
                         sql = "INSERT INTO items(item,quantity) VALUES(?,?)";
                         transaction.executeSql(sql,[row_xl["UMC No."],row_xl["Quantity"]],
-                        function(){alert("item added successfully")},
+                        function(){
+                            //alert("item added successfully")
+                        },
                         function(transaction,err){alert(//err.message//
                         "No Database Found. Create a database first")});
                         $("#fetch").click()

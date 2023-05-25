@@ -37,11 +37,14 @@ $(function(){
 
     var item_input = $("#instrument").val()
     var qty_input = $("#quantity").val();
-    if ((item_input.indexOf('')>=0)&&(qty_input > 0)&&(item_input!=null)&&(item_input!="")){
+    
+    alert(item_input.indexOf(" "))
+
+    if ((qty_input > 0)&&(item_input!=null)&&(item_input!=" ")){
     //insert_function(item_input,qty_input);
     db.transaction(function(transaction){
         // sql = "SELECT * FROM items WHERE item="+item_input+" ORDER BY id ASC"; //THIS IS PERFECT. BUT LETS TRY SOMETHING ELSE.
-        alert(item_input)
+        //alert(item_input)
         sql = "SELECT * FROM items WHERE item LIKE '%" +item_input+ "%' ORDER BY id ASC";
          transaction.executeSql(sql, undefined,function(transaction,result){
              if(result.rows.length){
@@ -122,8 +125,8 @@ function loadData(){
                 }
                 table.innerHTML=htmlData;
 
-                $("#instrument").children().remove()
-                $("#quantity").val() = 0
+                // $("#instrument").children().remove()
+                // $("#quantity").val() = 0
 
             // delete or exert button of table
                 for ( var i = 0; i <=result.rows.length; i++ ) (function(i){ 
